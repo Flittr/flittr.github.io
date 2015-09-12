@@ -1,0 +1,20 @@
+.list-group-item {
+    width: 100%;
+}
+
+img.img-responsive {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.green-background {
+    background-color: darkgreen;
+}
+
+.my-music-group {
+    display: none;
+}
+
+.dropdown-menu {
+    cursor: pointer;
+}

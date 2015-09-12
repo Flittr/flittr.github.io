@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>RE:mote/RE:coders control page</title>
+<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+
+<!-- jQuery (necessary JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://api.flittr.ru:8443/socket.io/socket.io.js"></script>
+<script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
+
+<script src="js/bootstrap.js"></script>
+<script src="/javascripts/constants.js"></script>
+<script src="js/mobile.js"></script>
+<!-- Custom Theme files -->
+<link href="css/style.css" rel='stylesheet' type='text/css' />
+<link href="css/mobile.css" rel='stylesheet' type='text/css' />
+<!-- Custom Theme files -->
+
+<!--//theme-style-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="UI Kit Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--//theme-style-->
+
+<!--audio-->
+<link rel="stylesheet" type="text/css" media="all" href="css/audio.css">
+<!---->
+
+ 
+</head>
+<body>
+	<div class="uikit" id="login-button-container" >
+		<div class="col-md-12 grid-left" style="text-align: center;">
+			<button id="login_button" onclick="VK.Auth.login(authInfo);" type="button" class="btn btn-primary btn-lg" 
+			data-toggle="button" aria-pressed="false" autocomplete="off">Войти ВКонтакте</button>
+		</div>
+	</div>
+<div id="main-container" class="uikit">
+	 <div class="col-md-6 grid-left">
+	 <div class="<col-md-7 grid1_4">
+		 <div id="no-connection" class="cal-result">
+			 <h3>Нет соединения</h3>
+		 </div>
+		 <div class="top-audio">
+			  <img id="song-cover" src="images/au.jpg" class="img-responsive" alt="" />
+				  <div class="audio-top">
+						<div class="audio-grid">
+							<h5 id="song-title">Now Playing</h5>
+							<p id="song-author">Artist</p>
+						</div>															
+			     </div>
+				 <!---->
+				 <div class="audio-player">
+					<div id="player-container" class="mejs-container svg mejs-audio">
+						<div class="mejs-inner">
+							<div class="mejs-mediaelement">
+								
+							</div>
+							<div class="mejs-layers">
+								<div class="mejs-poster mejs-layer" style="display: none; width: 400px; height: 30px;">
+									
+								</div>
+							</div>
+							<div class="mejs-controls">
+								<div class="mejs-button mejs-playpause-button mejs-play">
+									<button type="button" aria-controls="player-container" title="Play/Pause" aria-label="Play/Pause"></button>
+								</div>
+								<div class="mejs-time-rail" style="width: 0px;">
+									<span class="mejs-time-total" style="width: 0px;">
+										<span class="mejs-time-buffering" style="display: none;"></span>
+										<span class="mejs-time-loaded" style="width: 260px;"></span>
+										<span class="mejs-time-current" style="width: 30px;"></span>
+										<span class="mejs-time-handle" style="left: 0px;"></span>
+										<span class="mejs-time-float" style="display: none; left: 259px;">
+											<span class="mejs-time-float-current">01:21</span>
+											<span class="mejs-time-float-corner"></span>
+										</span>
+									</span>
+								</div>
+								<div class="mejs-button mejs-volume-button mejs-mute">
+									<button type="button" aria-controls="player-container" title="Mute Toggle" aria-label="Mute Toggle"></button>
+								</div>
+								<div class="mejs-horizontal-volume-slider mejs-mute">
+									<div class="mejs-horizontal-volume-total"></div>
+									<div class="mejs-horizontal-volume-current" style="width: 40px;"></div>
+								</div>
+							</div>
+							<div class="mejs-clear"></div>
+						</div>
+					</div>
+				  </div>
+					<!--//-->
+					<ul class="next-top">
+						<li><a href="#" id="player-backward"><i class="glyphicon glyphicon-backward"> </i></a></li>
+						<li><a href="#" id="player-forward"><i class="glyphicon glyphicon-forward"> </i></a></li>
+				 	</ul>	
+		</div>
+		<div class="text-forms">
+		 	<ul class="nav nav-pills">
+			  <li id="my-music" 	class="vk-music-type active"role="presentation"><a href="#">Моя музыка</a></li>
+			  <li id="my-suggestion" class="vk-music-type" role="presentation"><a href="#">Рекоммендации</a></li>
+			  <li id="my-popular" 	class="vk-music-type" role="presentation"><a href="#">Популярная</a></li>
+			  <li id="my-albums" 	class="vk-music-type1 disabled" role="presentation"><a href="#">Альбомы</a></li>
+			  <!-- li id="my-search" 	class="vk-music-type" role="presentation"><a href="#">Поиск</a></li -->
+			</ul>
+			<div class="my-music-group my-music-my-popular">
+  				<button type="button" data-genreid="" class="btn btn-default active">Любой</button>
+  				<button type="button" data-genreid="1" class="btn btn-default">Rock</button>
+  				<button type="button" data-genreid="2" class="btn btn-default">Pop</button>
+  				<button type="button" data-genreid="3" class="btn btn-default">Rap & Hip-Hop</button>
+  				<button type="button" data-genreid="4" class="btn btn-default">Easy Listening</button>
+  				<button type="button" data-genreid="5" class="btn btn-default">Dance & House</button>
+  				<button type="button" data-genreid="6" class="btn btn-default">Instrumental</button>
+  				<button type="button" data-genreid="7" class="btn btn-default">Metal</button>
+  				<button type="button" data-genreid="21" class="btn btn-default">Alternative</button>
+  				<button type="button" data-genreid="8" class="btn btn-default">Dubstep</button>
+  				<button type="button" data-genreid="9" class="btn btn-default">Jazz & Blues</button>
+  				<button type="button" data-genreid="10" class="btn btn-default">Drum & Bass</button>
+  				<button type="button" data-genreid="11" class="btn btn-default">Trance</button>
+  				<button type="button" data-genreid="12" class="btn btn-default">Chanson</button>
+  				<button type="button" data-genreid="13" class="btn btn-default">Ethnic</button>
+  				<button type="button" data-genreid="14" class="btn btn-default">Acoustic & Vocal</button>
+  				<button type="button" data-genreid="15" class="btn btn-default">Reggae</button>
+  				<button type="button" data-genreid="16" class="btn btn-default">Classical</button>
+  				<button type="button" data-genreid="17" class="btn btn-default">Indie Pop</button>
+  				<button type="button" data-genreid="19" class="btn btn-default">Speech</button>
+  				<button type="button" data-genreid="22" class="btn btn-default">Electropop & Disco</button>
+  				<button type="button" data-genreid="18" class="btn btn-default">Other</button>
+			</div>
+		 	<!-- Search -->
+			<div id="search-group" class="my1-music-group my-music-my-search input-group">
+			  <input type="text" id="search" data-performeronly="0" class="form-control" placeholder="Поиск" aria-label="...">
+		      <div class="input-group-btn">
+		        <button id="search-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">По любой части <span class="caret"></span></button>
+		        <ul class="dropdown-menu dropdown-menu-right">
+		          <li><a class="search-button-performeronly-link" data-performeronly="0" >По любой части</a></li>
+		          <li><a class="search-button-performeronly-link" data-performeronly="1" >Только по исполнителю</a></li>
+		          <!-- li><a href="#">Something else here</a></li>
+		          <li role="separator" class="divider"></li>
+		          <li><a href="#">Separated link</a></li -->
+		        </ul>
+		      </div><!-- /btn-group -->
+		    </div><!-- /input-group -->
+		    
+		 </div>
+	 </div>
+	 </div>
+	 
+	 <!---------->
+	 <div class="col-md-6 grid-right">
+	 <div class="col-md-12 grid3_4">
+	 	<div class="text-forms">
+			<div id="playlist-container" class="list-group">
+			</div>		 
+		</div>
+		<!------>
+	 </div>
+	 </div>
+	 <div class="clearfix"></div>
+</div>
+<div class="copywrite">
+	 <div class="container">
+		 <p>Copyright © 2015 re-coders.com. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
+	 </div>
+</div>
+</body>
+</html>

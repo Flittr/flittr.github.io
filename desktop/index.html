@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remote player</title>
+    <!-- Libraries -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://api.flittr.ru:8443/socket.io/socket.io.js"></script>
+    <script src="/javascripts/constants.js"></script>
+    <script src="//vk.com/js/api/xd_connection.js?2";  type="text/javascript"></script>    
+    
+    <!-- Player -->
+    <script src="/javascripts/mediaelement-and-player.min.js"></script><!-- Audio/Video Player jQuery -->
+    <script src="/javascripts/mep-feature-playlist.js"></script><!-- Playlist JavaSCript -->
+    <link rel="stylesheet" href="css/progression-player.css" /><!-- Default Player Styles -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" /><!-- Player Icons -->
+    <link rel="stylesheet" href="css/skin-minimal-light.css" /><!-- Minimal Light Skin -->
+    <link rel="stylesheet" href="css/desktop.css" /><!-- Minimal Light Skin -->
+</head>
+<body>
+    <div id="container">
+        <div id="controls">
+            <input type="text" id="search" name="search" />
+            <button id="go-search">Поиск</button>
+        </div>
+        <div id="player-container" class="progression-playlist-height responsive-wrapper responsive-audio" style="padding-bottom:174px;">
+            <!-- Adjust padding-bottom as needed so the playlist doesn't cover content below -->
+            <audio id="audioblock" class="progression-playlist progression-skin progression-minimal-light progression-audio-player" controls="controls" preload="none">
+            </audio>
+        </div><!-- close .responsive-wrapper -->
+    </div>
+    <script src="/javascripts/desktop.js"></script>
+</body>
+</html>
