@@ -7,7 +7,7 @@ img.img-responsive {
     width: 100%;
 }
 
-.green-background {
+.good {
     background-color: darkgreen;
 }
 
@@ -17,4 +17,26 @@ img.img-responsive {
 
 .dropdown-menu {
     cursor: pointer;
+}
+
+.hide-on-error,
+#main-container {
+    display: none;
+}
+
+.reload {
+    display: none;
+}
+
+.rotated {
+    animation: rotation 3s infinite;
+}
+
+@keyframes rotation {
+    100% {transform: rotate(360deg);}
+}
+
+#no-connection h3 {
+    display: inline;
+    vertical-align: middle;
 }

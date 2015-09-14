@@ -7,17 +7,12 @@ Number.isInteger = Number.isInteger || function(value) {
            Math.floor(value) === value;
 };
 
-var app = {};
-(function(app) {
-    app = app || {};
+(function($) {
+    $.flittr = $.flittr || {};
 
     var socket = io.connect('https://api.flittr.ru:8443');
     var $playlist = null;
-    var $noconnection = null;
-    
-    function playItem(aid) {
-        socket.emit(CMD_GENERAL_MOBILE_COMMAND, { command: CMD_PLAY_TRACK, aid: aid});
-    }
+    var $connectionMessage = null;
     
     function updatePlaylist(items, searchType, genre_id) {
         if (!$playlist) { return; }
@@ -101,22 +96,26 @@ var app = {};
         $('.playlist-item').removeClass('active');
         $('.playlist-item[data-itemuid="' + [info.owner_id, info.aid].join('_') + '"]').addClass("active");
         
-		var url = '//ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=ea60754e43d25c15169e06acef140b48&artist=' + info.artist + '&track=' + info.title + '&format=json&autocorrect=1';
-		$.getJSON(url,
-			function (response) {
-				var image = 'images/au.jpg';
-				if(response && response.track && response.track.album && response.track.album.image) {
-					$.each(response.track.album.image, function(key, value) {
-						if(value && value.size && value.size == 'large') {
-							image = value['#text'];
-						}
-					});
-				}
-				$('#song-cover').attr('src', image);
-	        }
+            var url = '//ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=ea60754e43d25c15169e06acef140b48&artist=' + info.artist + '&track=' + info.title + '&format=json&autocorrect=1';
+            $.getJSON(url,
+                function (response) {
+                    var image = 'images/au.jpg';
+                    if(response && response.track && response.track.album && response.track.album.image) {
+                        $.each(response.track.album.image, function(key, value) {
+                            if(value && value.size && value.size == 'large') {
+                                image = value['#text'];
+                            }
+                        });
+                    }
+                    $('#song-cover').attr('src', image);
+            }
         );
     }
     
+    function playItem(aid) {
+        socket.emit(CMD_GENERAL_MOBILE_COMMAND, { command: CMD_PLAY_TRACK, aid: aid});
+    }
+
     function playerForward() {
         socket.emit(CMD_GENERAL_MOBILE_COMMAND, {
             command: CMD_NEXT_TRACK
@@ -165,15 +164,17 @@ var app = {};
         }
     }
     
+    
+    // Socket handling 
     socket.on('message', function(data) {
         var txt = data.message;
         console.log('message: ' + txt);
         switch (data.message) {
             case 'desktop connected':
-                $noconnection.hide();
+                hideHostErrorMessage();
                 break;
             case 'desktop disconnected':
-                $noconnection.show();
+                showHostErrorMessage();
                 break;
             default:
                 // code
@@ -192,6 +193,13 @@ var app = {};
         }
     });
     
+    socket.io.on('connect_error', function(data) {
+        console.log('Socket: ' + data.type + ': ' + data.message);
+        showServerErrorMessage();
+    });
+    
+    
+    // Visual reconstructuction
     function registerUser (session) {
         socket.emit('register mobile', session);
     }
@@ -206,6 +214,28 @@ var app = {};
         $('#main-container').show();
     }
     
+    function showServerErrorMessage() {
+        $connectionMessage.children('h3').text('Ошибка сети.'); 
+        $connectionMessage.children('a').show();
+        $connectionMessage.removeClass('good');
+        $connectionMessage.show();
+        $('.hide-on-error').hide();
+    }
+    
+    function showHostErrorMessage() {
+        $connectionMessage.children('h3').text('Нет соединения.');
+        $connectionMessage.children('a').show();
+        $connectionMessage.removeClass('good');
+        $connectionMessage.show();
+        $('.hide-on-error').hide();
+    }
+    
+    function hideHostErrorMessage() {
+        $connectionMessage.addClass('good');
+        $connectionMessage.hide();
+        $('.hide-on-error').show();
+    }
+    
     function getTimestamp() {
         return Date.now() / 1000 | 0;
     }
@@ -215,8 +245,7 @@ var app = {};
         socket.emit(CMD_GENERAL_MOBILE_COMMAND, { command: CMD_GET_TRACK_INFO, timestamp: getTimestamp() });
     }
     
-    // Interface
-    app.authInfo = function(response) {
+    $.flittr.authInfo = function(response) {
         if (response.session) {
             hideLoginButton();
             registerUser(response.session);
@@ -225,21 +254,35 @@ var app = {};
             showLoginButton();
         }
     };
-
-    $(document).ready(function(){
-        socket.connect('https://api.flittr.ru:8443/');
-
-
+    
+    // Startup initialization
+    $.flittr.init = function(config) {
+        
+        config = config || {};
+        
+        // VK
         VK.init({
-            apiId: 5035004
+            apiId: config.appId
         });
-        VK.Auth.getLoginStatus(app.authInfo);
+        VK.Auth.getLoginStatus($.flittr.authInfo);
+                
+        // Interface
         $playlist = $('#playlist-container');
-        $noconnection = $('#no-connection');
+        $connectionMessage = $('#no-connection');
         seekerWidth = $('.mejs-time-total').width();
         volumeWidth = $('.mejs-horizontal-volume-total').width();
         $mejsTimeHandle = $('.mejs-time-handle');
         $mejsVolumeHandle = $('.mejs-horizontal-volume-current');
+        
+        // Interface handling
+        $('.reload img').on('mouseover', function(e){
+            this.className += ' rotated';
+        });
+        $('.reload img').on('mouseleave', function(e){
+            $(this).removeClass('rotated');
+        });
+        
+        // Handling
         $('#player-backward').on('click', playerBackward);
         $('#player-forward').on('click', playerForward);
         $('.mejs-playpause-button > button').on('click', playerPlayPause);
@@ -320,10 +363,6 @@ var app = {};
             $('#search').attr('data-performeronly', this.getAttribute('data-performeronly'));
             $('#search-button').html(this.innerText + ' <span class="caret"></span>');
         });
-    });
+    };
     
-})(app);
-
-function authInfo(response) {
-    return app.authInfo(response);
-}
+})(jQuery);

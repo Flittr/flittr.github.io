@@ -11,7 +11,6 @@
 
 <script src="js/bootstrap.js"></script>
 <script src="/javascripts/constants.js"></script>
-<script src="js/mobile.js"></script>
 <!-- Custom Theme files -->
 <link href="css/style.css" rel='stylesheet' type='text/css' />
 <link href="css/mobile.css" rel='stylesheet' type='text/css' />
@@ -29,22 +28,38 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link rel="stylesheet" type="text/css" media="all" href="css/audio.css">
 <!---->
 
+<!-- General initialization -->
+<script src="js/mobile.js"></script>
+<script type="application/x-javascript">
+    $(document).ready(function() {
+        
+        $.flittr.init({ appId: 5035004 });
+        
+        $('#login_button').on('click', function() {
+            VK.Auth.login($.flittr.authInfo);
+        });
+        
+    });
+</script>
+<!-- End of general initialization -->
  
 </head>
 <body>
 	<div class="uikit" id="login-button-container" >
 		<div class="col-md-12 grid-left" style="text-align: center;">
-			<button id="login_button" onclick="VK.Auth.login(authInfo);" type="button" class="btn btn-primary btn-lg" 
-			data-toggle="button" aria-pressed="false" autocomplete="off">Войти ВКонтакте</button>
+			<button id="login_button" type="button" class="btn btn-primary btn-lg" data-toggle="button" aria-pressed="false" >Войти ВКонтакте</button>
 		</div>
 	</div>
 <div id="main-container" class="uikit">
+        <div id="no-connection" class="cal-result good">
+                <h3>Подключение...</h3>
+                <a class="reload" href="#" onclick="window.location.reload();">
+                    <img src="/images/refresh-icon.png" alt="refresh" />
+                </a>
+        </div>
 	 <div class="col-md-6 grid-left">
-	 <div class="<col-md-7 grid1_4">
-		 <div id="no-connection" class="cal-result">
-			 <h3>Нет соединения</h3>
-		 </div>
-		 <div class="top-audio">
+	 <div class="col-md-7 grid1_4">
+		 <div class="top-audio hide-on-error">
 			  <img id="song-cover" src="images/au.jpg" class="img-responsive" alt="" />
 				  <div class="audio-top">
 						<div class="audio-grid">
@@ -98,7 +113,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<li><a href="#" id="player-forward"><i class="glyphicon glyphicon-forward"> </i></a></li>
 				 	</ul>	
 		</div>
-		<div class="text-forms">
+		<div class="text-forms hide-on-error">
 		 	<ul class="nav nav-pills">
 			  <li id="my-music" 	class="vk-music-type active"role="presentation"><a href="#">Моя музыка</a></li>
 			  <li id="my-suggestion" class="vk-music-type" role="presentation"><a href="#">Рекоммендации</a></li>
@@ -150,7 +165,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	 </div>
 	 
 	 <!---------->
-	 <div class="col-md-6 grid-right">
+	 <div class="col-md-6 grid-right hide-on-error">
 	 <div class="col-md-12 grid3_4">
 	 	<div class="text-forms">
 			<div id="playlist-container" class="list-group">
