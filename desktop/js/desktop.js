@@ -6,7 +6,7 @@ Number.isInteger = Number.isInteger || function(value) {
            Math.floor(value) === value;
 };
 
-(function() {
+(function($) {
 
     var socket = io.connect('https://api.flittr.ru:8443');
     var $playercontainer = $('#player-container');
@@ -269,4 +269,4 @@ Number.isInteger = Number.isInteger || function(value) {
         }); 
     });
     
-})();
+})(jQuery);
