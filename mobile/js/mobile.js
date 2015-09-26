@@ -176,6 +176,9 @@ Number.isInteger = Number.isInteger || function(value) {
             case 'desktop disconnected':
                 showHostErrorMessage();
                 break;
+            case 'desktop offline':
+                showHostErrorMessage();
+                break;
             default:
                 // code
         }
