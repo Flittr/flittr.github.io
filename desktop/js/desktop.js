@@ -266,7 +266,7 @@ Number.isInteger = Number.isInteger || function(value) {
                     sendTrackInfo(mediaElement, e);
                 }, false);
                 mediaElement.addEventListener('ended', function(e) {
-                    playFile(lastLoadedPlaylist[++currentTrackId]);
+                    playFile(lastLoadedPlaylist[++currentTrackId].url);
                 }, false);
                 $player = mediaElement;
                 if (firstLoad) {
