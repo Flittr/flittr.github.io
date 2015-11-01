@@ -31,11 +31,7 @@ Number.isInteger = Number.isInteger || function(value) {
             e.currentTarget.className += " active";
         });
         // Tiny hack: after pleylist updated, we use first track as first played.
-        if (Number.isInteger(items[0])) {
-            updateTrack(items[1]);
-        } else {
-            updateTrack(items[0]);
-        }
+        socket.emit(CMD_GENERAL_MOBILE_COMMAND, { command: CMD_GET_TRACK_INFO, timestamp: getTimestamp() });
         
         // SearchType
         searchType = searchType || CMD_OPEN_MY_AUDIO;

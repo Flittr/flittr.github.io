@@ -16,6 +16,8 @@ Number.isInteger = Number.isInteger || function(value) {
     var firstLoad = true;
     var currentSearchType = CMD_OPEN_MY_AUDIO;
     var currentPopularGenre = null;
+    var currentTrackId = -1;
+    var currentTrackInfo = null;
 
     socket.on("message", function(data) {
         console.log("Message:" +  data.message);
@@ -113,15 +115,23 @@ Number.isInteger = Number.isInteger || function(value) {
         }
     }
     
+    function playFile(src) {
+        $player.setSrc([{'src': src, 'type': 'audio/mpeg'}]);
+        $player.play();
+        playerWidthFix();
+    }
+    
     function playTrack(aid) {
         var info = aid.split('_');
+        var subCurrentTrackId = currentTrackId;
         var track = lastLoadedPlaylist.find(function (element, index, array) {
-            if (index == 0) { return false; }
+            if (Number.isInteger(element)) { return false; }
+            subCurrentTrackId = index;
             return element.owner_id == info[0] && element.aid == info[1];
         });
         if (track) {
-            var trackDiv = $('ul.mejs li[data-url="' + track.url + '"]');
-            trackDiv.trigger('click');
+            currentTrackId = subCurrentTrackId;
+            $('ul.mejs li[data-url="' + track.url + '"]').trigger('click');
         }
     }
     
@@ -149,24 +159,23 @@ Number.isInteger = Number.isInteger || function(value) {
     }
     
     function sendTrackInfo(mediaElement, e) {
-        var $current = $('ul.mejs li.current');
-        var src = $current.attr('data-url');
         var item = lastLoadedPlaylist.find(function(element, index, array) {
-            if (index == 0) { return false; }
-            return element.url == src;
+            if (Number.isInteger(element)) { return false; }
+            return element.url == $player.src;
         });
         if (item) {
-            VK.callMethod("setTitle", item.title + ' - ' + item.artist);
-            socket.emit(CMD_GENERAL_DESKTOP_COMMAND, {
-                message: MSG_TRACK_PLAY,
-                info: {
+            currentTrackInfo = {
                     title: item.title,
                     artist: item.artist,
                     owner_id: item.owner_id,
                     aid: item.aid
-                }
-            });
+            };
+            VK.callMethod("setTitle", item.title + ' - ' + item.artist);
         }
+        socket.emit(CMD_GENERAL_DESKTOP_COMMAND, {
+            message: MSG_TRACK_PLAY,
+            info: currentTrackInfo
+        });
     }
     
     function sendSearchInfo(search) {
@@ -190,14 +199,50 @@ Number.isInteger = Number.isInteger || function(value) {
         });
     }
     
+    function playerWidthFix() {
+        // Tiny fix
+        setTimeout(function() {
+            $('.mejs-controls').width($('.mejs-controls').width() + 3);
+        }, 3000);            
+    }
+    
     function parsePlaylist(response) {
+        if (firstLoad) {
+            parsePlaylistGeneral(response);
+            playerWidthFix();
+        } else {
+            var $playlistContainer = $('.mejs-playlist ul');
+            $playlistContainer.empty();
+            for(var i = 0; i < response.length; i++) {
+                var item = response[i];
+                if (Number.isInteger(item)) { continue; }
+                var $li = $('<li/>', {
+                    'data-url': item.url,
+                    'title': item.artist + ' - ' + item.title
+                })
+                .text(item.artist + ' - ' + item.title)
+                .on('click', function(e) {
+                    $('ul.mejs li').removeClass('current');
+                    this.className = 'current';
+                    sendTrackInfo($player, e);
+                    playFile(this.dataset.url);
+                });
+                $playlistContainer.append($li);
+            }
+            lastLoadedPlaylist = response;
+            sendPlaylistUpdates(response);
+        }
+    }
+    
+    function parsePlaylistGeneral(response) {
         $playercontainer.empty();
         var audio = $('<audio>')
             .attr({ id: "audioblock", 'class': "progression-playlist progression-skin progression-minimal-light progression-audio-player", 
                     controls: "controls", preload: "none"});
+        currentTrackId = 0;
         for(var i = 0; i < response.length; i++) {
             var item = response[i];
-            if (Number.isInteger(item)) { continue; }
+            if (Number.isInteger(item)) { currentTrackId = 1; continue; }
             var source = $('<source/>')
                 .attr({ 'src': item.url, 'title': item.artist + ' - ' + item.title, type: "audio/mpeg" });
             audio.append(source);
@@ -221,7 +266,7 @@ Number.isInteger = Number.isInteger || function(value) {
                     sendTrackInfo(mediaElement, e);
                 }, false);
                 mediaElement.addEventListener('ended', function(e) {
-                    mediaElement.player.play();
+                    playFile(lastLoadedPlaylist[++currentTrackId]);
                 }, false);
                 $player = mediaElement;
                 if (firstLoad) {

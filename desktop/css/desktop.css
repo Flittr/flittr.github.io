@@ -1,3 +1,7 @@
 .mejs-playlist-button {
     display: none;
 }
+
+#controls {
+    display: none;
+}
