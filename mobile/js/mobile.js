@@ -13,6 +13,7 @@ Number.isInteger = Number.isInteger || function(value) {
     var socket = io.connect('https://api.flittr.ru:8443');
     var $playlist = null;
     var $connectionMessage = null;
+    var helpMessage = "";
     
     function updatePlaylist(items, searchType, genre_id) {
         if (!$playlist) { return; }
@@ -214,7 +215,9 @@ Number.isInteger = Number.isInteger || function(value) {
     }
     
     function showServerErrorMessage() {
-        $connectionMessage.children('h3').text('Ошибка сети.'); 
+        helpMessage = 'Окей. Все плохо. Правда. Если вы видите эту ошибку, значит наш крохотный сервер загнулся от нагрузки, которая пришла по его душу. '
+        + 'Что ж, придется немного потерпеть. Или написать разработчикам. См. нашу группу http://vk.com/flittr чтобы связаться с ними.';
+        $connectionMessage.children('h3').text('Ошибка сети'); 
         $connectionMessage.children('a').show();
         $connectionMessage.removeClass('good');
         $connectionMessage.show();
@@ -222,7 +225,12 @@ Number.isInteger = Number.isInteger || function(value) {
     }
     
     function showHostErrorMessage() {
-        $connectionMessage.children('h3').text('Нет соединения.');
+        helpMessage = 'Такая ошибка происходит, когда вы не запустили второе приложение. Попробуйте открыть свой любимый Google Chrome (на компьютере), '
+            + 'далее через меню -> Дополнительные иструменты -> Расширения -> Еще расширения и потом набрать в поиске "Flittr" (без кавычек). '
+            + 'После установки расширения должна появиться небольшая кнопочка в виде зеленой нотки. Нажмите ее и откроется приложение ВКонтакте. '
+            + 'Вот оно-то и проигрывает музыку. Без него ваша замечательная Android программа даже и не подумает запуститься =). '
+            + 'Также, после всех этих манипуляций попробуйте нажать на значок перезагрузки справа от ошибки. Это на всякий случай.';
+        $connectionMessage.children('h3').text('Нет соединения');
         $connectionMessage.children('a').show();
         $connectionMessage.removeClass('good');
         $connectionMessage.show();
@@ -253,6 +261,13 @@ Number.isInteger = Number.isInteger || function(value) {
             showLoginButton();
         }
     };
+    
+    // Help supporter
+    $.flittr.help = function() {
+        $('#help-info').toggle();
+        $('#help-info p').text(helpMessage);
+        return false;
+    }
     
     // Startup initialization
     $.flittr.init = function(config) {

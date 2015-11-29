@@ -48,14 +48,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="uikit" id="login-button-container" >
 		<div class="col-md-12 grid-left" style="text-align: center;">
 			<button id="login_button" type="button" class="btn btn-primary btn-lg" data-toggle="button" aria-pressed="false" >Войти ВКонтакте</button>
+			<p class="white start-info-text">*Flittr.app - ex-VK Music Control.</p>
+			<p class="white small">Flittr.app - программа, которая состоит из двух частей. Одну из них вы сейчас уже открыли - это приложение для Android,
+			которое позволяет управлять музыкой в браузере. Вторая программа - расширение для браузера Google Chrome под названием "Flittr.app" 
+			(вы легко можете его найти, зайдя в поиск расширений для Google Chrome и набрав в поиске "Flittr")</p>
+			<p class="white small">Обе программы передают информацию через сервера ВКонтакте, поэтому для того, чтобы начать пользоваться,
+			надо авторизоваться в обоих.</p>
+			<p class="white small">И, да, мы не крадем пароли. Хотя, конечно, могли бы.
+			<img src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f608.png" style="width: 15px;" alt="Devil"/></p>
+			
 		</div>
 	</div>
 <div id="main-container" class="uikit">
         <div id="no-connection" class="cal-result good">
-                <h3>Подключение...</h3>
-                <a class="reload" href="#" onclick="window.location.reload(); return false;">
+                <h3 onclick="return $.flittr.help();">Подключение...</h3>
+                <a class="help-icon temporary-hidden" href="#" onclick="return $.flittr.help();">
+                    <img src="/images/help-small-white.png" alt="show help" />
+                </a>
+                <a class="reload temporary-hidden" href="#" onclick="window.location.reload(); return false;">
                     <img src="/images/refresh-icon.png" alt="refresh" />
                 </a>
+        </div>
+        <div id="help-info" class="watch temporary-hidden">
+            <h3 id="help-info-title">Справка</h3>
+            <p>Flittr.app - новое приложение, которое позволяет управлять музыкой ВКонтакте</p>
         </div>
 	 <div class="col-md-6 grid-left">
 	 <div class="col-md-7 grid1_4">
@@ -178,7 +194,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>
 <div class="copywrite">
 	 <div class="container">
-		 <p>© re-coders.com</p>
+		 <p>🏳 flittr.ru. ✌ re-coders.com + 💛</p>
 	 </div>
 </div>
 </body>
