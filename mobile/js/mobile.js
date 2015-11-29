@@ -241,6 +241,7 @@ Number.isInteger = Number.isInteger || function(value) {
         $connectionMessage.addClass('good');
         $connectionMessage.hide();
         $('.hide-on-error').show();
+        $('#help-info').hide();
     }
     
     function getTimestamp() {
